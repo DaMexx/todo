@@ -7,10 +7,21 @@ const $ADD_BUTTON = document.querySelector(".todo-input-block__button");
 const $TODO_LIST = document.querySelector(".list-container");
 
 const todos = [];
-let currentFilter = FILTERS.all.value;
+
+const currentFilter = {
+  value: FILTERS.all.value,
+  getCurrentFilter() {
+    const filterValue = this.value;
+    return filterValue;
+  },
+  setFilterType(filterType) {
+    this.value = filterType;
+  }
+};
 
 const getFilteredTodos = () => {
-  switch (currentFilter) {
+  const filter = currentFilter.getCurrentFilter();
+  switch (filter) {
     case FILTERS.completed.value:
       return todos.filter((todoItem) => todoItem.isComplete);
     case FILTERS.uncompleted.value:
@@ -21,7 +32,7 @@ const getFilteredTodos = () => {
 };
 
 const changeFilter = (filterType) => {
-  currentFilter = filterType;
+  currentFilter.setFilterType(filterType);
   renderTodoList();
 };
 
@@ -43,6 +54,7 @@ const addTodo = () => {
   $MAIN_INPUT.value = "";
   renderTodoList();
 };
+
 const handleTodoInputKeyDown = (event) => {
   if (event.key !== "Enter") {
     return;
@@ -50,6 +62,7 @@ const handleTodoInputKeyDown = (event) => {
   addTodo();
   $MAIN_INPUT.focus();
 };
+
 const createTodoNodeElement = (todoItem) => {
   const $todoItem = document.createElement("li");
   $todoItem.classList.add("list-container__item");
@@ -59,7 +72,7 @@ const createTodoNodeElement = (todoItem) => {
   $todoCheckbox.checked = todoItem.isComplete;
   $todoCheckbox.addEventListener("click", () => {
     checkTodo(todoItem.id);
-  })
+  });
 
   const $todoContent = document.createElement("span");
   $todoContent.innerText = todoItem.text;
@@ -100,7 +113,7 @@ const checkTodo = (id) => {
   }
   todos[index].isComplete = !todos[index].isComplete;
   renderTodoList();
-}
+};
 
 $ADD_BUTTON.addEventListener("click", addTodo);
 $MAIN_INPUT.addEventListener("keyup", handleTodoInputKeyDown);
