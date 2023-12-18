@@ -9,7 +9,6 @@ const $TODO_LIST = document.querySelector(".list-container");
 const todos = [];
 let currentFilter = FILTERS.all.value;
 
-console.log(currentFilter);
 const getFilteredTodos = () => {
   switch (currentFilter) {
     case FILTERS.completed.value:
@@ -22,9 +21,7 @@ const getFilteredTodos = () => {
 };
 
 const changeFilter = (filterType) => {
-  console.log(filterType);
   currentFilter = filterType;
-  console.log(currentFilter, filterType);
   renderTodoList();
 };
 
