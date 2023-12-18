@@ -1,10 +1,10 @@
 import { drawFilters } from "./filters.js";
 import { FILTERS } from "./appСonstants.js";
 
-const $INPUT_CONTAINER = document.querySelector(".todo-input-block");
-const $MAIN_INPUT = document.querySelector(".todo-input-block__input");
-const $ADD_BUTTON = document.querySelector(".todo-input-block__button");
-const $TODO_LIST = document.querySelector(".list-container");
+const $inputContainer = document.querySelector(".todo-input-block");
+const $mainInput = document.querySelector(".todo-input-block__input");
+const $addButton = document.querySelector(".todo-input-block__button");
+const $todoList = document.querySelector(".list-container");
 
 const todos = [];
 
@@ -21,14 +21,15 @@ const currentFilter = {
 
 const getFilteredTodos = () => {
   const filter = currentFilter.getCurrentFilter();
-  switch (filter) {
-    case FILTERS.completed.value:
-      return todos.filter((todoItem) => todoItem.isComplete);
-    case FILTERS.uncompleted.value:
-      return todos.filter((todoItem) => !todoItem.isComplete);
-    default:
-      return todos;
-  }
+  return todos.filter((todoItem) => {
+    if (filter === FILTERS.completed.value) {
+      return todoItem.isComplete;
+    }
+    if (filter === FILTERS.uncompleted.value) {
+      return !todoItem.isComplete;
+    }
+    return true;
+  });
 };
 
 const changeFilter = (filterType) => {
@@ -37,10 +38,10 @@ const changeFilter = (filterType) => {
 };
 
 const $FILTER_BLOCK = drawFilters(FILTERS, changeFilter);
-$INPUT_CONTAINER.append($FILTER_BLOCK);
+$inputContainer.append($FILTER_BLOCK);
 
 const addTodo = () => {
-  const text = $MAIN_INPUT.value.trim();
+  const text = $mainInput.value.trim();
   if (text === "") {
     return;
   }
@@ -51,7 +52,7 @@ const addTodo = () => {
     isComplete: false,
   };
   todos.push(newTodoObj);
-  $MAIN_INPUT.value = "";
+  $mainInput.value = "";
   renderTodoList();
 };
 
@@ -60,7 +61,7 @@ const handleTodoInputKeyDown = (event) => {
     return;
   }
   addTodo();
-  $MAIN_INPUT.focus();
+  $mainInput.focus();
 };
 
 const createTodoNodeElement = (todoItem) => {
@@ -90,10 +91,10 @@ const createTodoNodeElement = (todoItem) => {
 
 const renderTodoList = () => {
   const todoList = getFilteredTodos();
-  $TODO_LIST.innerHTML = "";
+  $todoList.innerHTML = "";
   todoList.forEach((todoItem) => {
     const $todoItem = createTodoNodeElement(todoItem);
-    $TODO_LIST.append($todoItem);
+    $todoList.append($todoItem);
   });
 };
 
@@ -115,5 +116,5 @@ const checkTodo = (id) => {
   renderTodoList();
 };
 
-$ADD_BUTTON.addEventListener("click", addTodo);
-$MAIN_INPUT.addEventListener("keyup", handleTodoInputKeyDown);
+$addButton.addEventListener("click", addTodo);
+$mainInput.addEventListener("keyup", handleTodoInputKeyDown);
