@@ -60,30 +60,33 @@ const createTodoNodeElement = (todoItem) => {
   const $todoCheckbox = document.createElement("input");
   $todoCheckbox.type = "checkbox";
   $todoCheckbox.checked = todoItem.isComplete;
+  $todoCheckbox.addEventListener("click", () => {
+    checkTodo(todoItem.id);
+  })
+
   const $todoContent = document.createElement("span");
   $todoContent.innerText = todoItem.text;
 
   const $todoRemoveButton = document.createElement("button");
 
   $todoRemoveButton.innerText = "Delete";
-  $todoRemoveButton.addEventListener(
-    "click",
-    removeTodo.bind(null, todoItem.id)
-  );
+  $todoRemoveButton.addEventListener("click", () => {
+    removeTodo(todoItem.id);
+  });
 
   $todoItem.append($todoCheckbox, $todoContent, $todoRemoveButton);
   return $todoItem;
 };
 
 const renderTodoList = () => {
-  const todoList = getFilteredTodos()
+  const todoList = getFilteredTodos();
   $TODO_LIST.innerHTML = "";
   todoList.forEach((todoItem) => {
     const $todoItem = createTodoNodeElement(todoItem);
     $TODO_LIST.append($todoItem);
   });
 };
-getFilteredTodos();
+
 const removeTodo = (id) => {
   const index = todos.findIndex((todoItem) => todoItem.id === id);
   if (index === -1) {
@@ -92,6 +95,15 @@ const removeTodo = (id) => {
   todos.splice(index, 1);
   renderTodoList();
 };
+
+const checkTodo = (id) => {
+  const index = todos.findIndex((todoItem) => todoItem.id === id);
+  if (index === -1) {
+    return;
+  }
+  todos[index].isComplete = !todos[index].isComplete;
+  renderTodoList();
+}
 
 $ADD_BUTTON.addEventListener("click", addTodo);
 $MAIN_INPUT.addEventListener("keyup", handleTodoInputKeyDown);
