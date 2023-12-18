@@ -1,5 +1,5 @@
 import { drawFilters } from "./filters.js";
-import { FILTERS } from "./app_constants.js";
+import { FILTERS } from "./appСonstants.js";
 
 const $INPUT_CONTAINER = document.querySelector(".todo-input-block");
 const $MAIN_INPUT = document.querySelector(".todo-input-block__input");
@@ -16,7 +16,7 @@ const currentFilter = {
   },
   setFilterType(filterType) {
     this.value = filterType;
-  }
+  },
 };
 
 const getFilteredTodos = () => {
