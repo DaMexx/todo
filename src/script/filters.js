@@ -1,15 +1,14 @@
 const drawFilters = (filters, callBack) => {
-  const $FILTER_BLOCK = document.createElement('div');
+  const $filterBlock = document.createElement('div');
   for (const filter of Object.values(filters)) {
-    const $BUTTON = document.createElement('button');
-    $BUTTON.innerText = filter.name;
-    $BUTTON.addEventListener('click', () => callBack(filter.type));
-    $FILTER_BLOCK.append($BUTTON);
+    const $button = document.createElement('button');
+    $button.innerText = filter.name;
+    $button.addEventListener('click', () => callBack(filter.value));
+    $filterBlock.append($button);
   }
-  return $FILTER_BLOCK;
+  return $filterBlock;
 }
 
 export {
   drawFilters,
 }
-

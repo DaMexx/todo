@@ -1,18 +1,17 @@
 const FILTERS = {
-  ALL: {
+  all: {
     name: 'All',
-    type: 'all'
+    value: 'all'
   },
-  COMPLETED: {
+  completed: {
     name: 'Completed',
-    type: 'completed'
+    value: 'completed'
   },
-  UNCOMPLETED: {
+  uncompleted: {
     name: 'Uncompleted',
-    type: 'uncompleted'
+    value: 'uncompleted'
   },
 }
-
 
 export {
   FILTERS,
