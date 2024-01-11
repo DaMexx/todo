@@ -1,5 +1,5 @@
 import { drawFilters } from "./filters.js";
-import { FILTERS } from "./appСonstants.js";
+import { FILTERS } from "./appConstants.js";
 
 const $inputContainer = document.querySelector(".todo-input-block");
 const $mainInput = document.querySelector(".todo-input-block__input");
@@ -99,21 +99,26 @@ const renderTodoList = () => {
 };
 
 const removeTodo = (id) => {
-  const index = todos.findIndex((todoItem) => todoItem.id === id);
-  if (index === -1) {
-    return;
-  }
+  const { index } = findTodo(id);
+
   todos.splice(index, 1);
   renderTodoList();
 };
 
 const checkTodo = (id) => {
+  const { todoItem } = findTodo(id);
+  todoItem.isComplete = !todoItem.isComplete;
+  renderTodoList();
+};
+
+const findTodo = (id) => {
   const index = todos.findIndex((todoItem) => todoItem.id === id);
   if (index === -1) {
     return;
   }
-  todos[index].isComplete = !todos[index].isComplete;
-  renderTodoList();
+
+  const todoItem = todos[index];
+  return { index, todoItem };
 };
 
 $addButton.addEventListener("click", addTodo);
