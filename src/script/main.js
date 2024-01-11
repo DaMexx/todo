@@ -67,6 +67,11 @@ const handleTodoInputKeyDown = (event) => {
 const createTodoNodeElement = (todoItem) => {
   const $todoItem = document.createElement("li");
   $todoItem.classList.add("list-container__item");
+  $todoItem.classList.add("item");
+
+  if (todoItem.isComplete) {
+    $todoItem.classList.add("item--checked");
+  }
 
   const $todoCheckbox = document.createElement("input");
   $todoCheckbox.type = "checkbox";
@@ -76,11 +81,13 @@ const createTodoNodeElement = (todoItem) => {
   });
 
   const $todoContent = document.createElement("span");
+  $todoContent.classList.add("item__text");
   $todoContent.innerText = todoItem.text;
 
   const $todoRemoveButton = document.createElement("button");
+  $todoRemoveButton.innerHTML = "&#10060";
+  $todoRemoveButton.classList.add("item__remove-button");
 
-  $todoRemoveButton.innerText = "Delete";
   $todoRemoveButton.addEventListener("click", () => {
     removeTodo(todoItem.id);
   });
