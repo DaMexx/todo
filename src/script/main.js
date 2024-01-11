@@ -99,19 +99,19 @@ const renderTodoList = () => {
 };
 
 const removeTodo = (id) => {
-  const { index } = findTodo(id);
+  const { index } = findTodoInList(id);
 
   todos.splice(index, 1);
   renderTodoList();
 };
 
 const checkTodo = (id) => {
-  const { todoItem } = findTodo(id);
+  const { todoItem } = findTodoInList(id);
   todoItem.isComplete = !todoItem.isComplete;
   renderTodoList();
 };
 
-const findTodo = (id) => {
+const findTodoInList = (id) => {
   const index = todos.findIndex((todoItem) => todoItem.id === id);
   if (index === -1) {
     return;
