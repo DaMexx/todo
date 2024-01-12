@@ -4,16 +4,26 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script type="module" src="./src/script/main.js" defer></script>
-    <link rel="stylesheet" href="./src/assets/main.css">
+    <link rel="stylesheet" href="./src/style/main.css">
     <title>Todo-list</title>
 </head>
 <body>
     <main class="main">
       <section class="todo-input-block">
-        <input type="text" class="todo-input-block__input">
+        <input type="text" class="todo-input-block__input" placeholder="Enter new todo...">
         <button class="todo-input-block__button">Add new ToDo</button>
+        <div class="todo-input-block__filters-wrapper"></div>
       </section>
       <section class="todo-list">
+        <div class="todo-list__manipulation-block">
+          <div class="manipulation-block__check-all">
+            <input type="checkbox" class="manipulation-block__checkbox">
+            <span class="manipulation-block__checkbox-label">Check all</span>
+          </div>
+          <div class="manipulation-block__remove-selected">
+            <button class="manipulation-block__remove-selected-button">Remove selected &#10060;</button>
+          </div>
+        </div>
         <ul class="list-container"></ul>
       </section>
     </main>
