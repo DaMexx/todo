@@ -63,7 +63,7 @@
 }
 
 .item__remove-button {
-  background-color: inherit;
+  background: none;
   border: none;
 }
 
@@ -76,10 +76,17 @@
   text-decoration: overline;
 }
 
-.item--checked {
+.item--checked :not(button) {
   opacity: 0.5;
+  /* background-color: rgba(255,255,255,0.5); */
 }
 
 .item--checked .item__text {
+  /* background: rgba(255,255,255,0.5); */
+
   text-decoration: line-through;
+}
+
+.item--prepared-for-remove {
+  background-color: rgba(242, 96, 115, 0.3);
 }

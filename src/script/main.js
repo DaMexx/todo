@@ -5,8 +5,33 @@ const $inputContainer = document.querySelector(".todo-input-block");
 const $mainInput = document.querySelector(".todo-input-block__input");
 const $addButton = document.querySelector(".todo-input-block__button");
 const $todoList = document.querySelector(".list-container");
+const $filterBlock = document.querySelector(
+  ".todo-input-block__filters-wrapper"
+);
+const $checkBoxSelectAll = document.querySelector(
+  ".manipulation-block__checkbox"
+);
+const $buttonRemoveAllSelected = document.querySelector(
+  ".manipulation-block__remove-selected-button"
+);
 
-const todos = [];
+let todos = [];
+
+const handleWatchToBoxSelectAll = (list) => {
+  list.length
+    ? ($checkBoxSelectAll.disabled = false)
+    : ($checkBoxSelectAll.disabled = true);
+
+  if (list.length) {
+    list.every((todoItem) => todoItem.isComplete)
+      ? ($checkBoxSelectAll.checked = true)
+      : ($checkBoxSelectAll.checked = false);
+  } else {
+    $checkBoxSelectAll.checked = false;
+  }
+};
+
+handleWatchToBoxSelectAll(todos);
 
 const currentFilter = {
   value: FILTERS.all.value,
@@ -32,13 +57,32 @@ const getFilteredTodos = () => {
   });
 };
 
+const calculateFiltersCount = () => {
+  Object.keys(FILTERS).forEach((filter) => {
+    FILTERS[filter].count = todos.filter((todoItem) => {
+      if (filter === FILTERS.completed.value) {
+        return todoItem.isComplete;
+      }
+      if (filter === FILTERS.uncompleted.value) {
+        return !todoItem.isComplete;
+      }
+      return true;
+    }).length;
+  });
+};
+
 const changeFilter = (filterType) => {
   currentFilter.setFilterType(filterType);
   renderTodoList();
 };
 
-const $FILTER_BLOCK = drawFilters(FILTERS, changeFilter);
-$inputContainer.append($FILTER_BLOCK);
+const updateFilters = () => {
+  $filterBlock.innerHTML = "";
+  const $filters = drawFilters(FILTERS, changeFilter);
+  $filterBlock.append($filters);
+};
+
+updateFilters();
 
 const addTodo = () => {
   const text = $mainInput.value.trim();
@@ -88,6 +132,14 @@ const createTodoNodeElement = (todoItem) => {
   $todoRemoveButton.innerHTML = "&#10060";
   $todoRemoveButton.classList.add("item__remove-button");
 
+  $todoRemoveButton.addEventListener("mouseover", () => {
+    $todoItem.classList.add("item--prepared-for-remove");
+  });
+
+  $todoRemoveButton.addEventListener("mouseout", () => {
+    $todoItem.classList.remove("item--prepared-for-remove");
+  });
+
   $todoRemoveButton.addEventListener("click", () => {
     removeTodo(todoItem.id);
   });
@@ -96,13 +148,24 @@ const createTodoNodeElement = (todoItem) => {
   return $todoItem;
 };
 
-const renderTodoList = () => {
+const renderTodoList = (checkAllValue) => {
   const todoList = getFilteredTodos();
+
   $todoList.innerHTML = "";
+  calculateFiltersCount();
+  updateFilters();
+
+  if (checkAllValue) {
+    todoList.forEach((todoItem) => {
+      todoItem.isComplete = checkAllValue.value;
+    });
+  }
+
   todoList.forEach((todoItem) => {
     const $todoItem = createTodoNodeElement(todoItem);
     $todoList.append($todoItem);
   });
+  handleWatchToBoxSelectAll(todoList);
 };
 
 const removeTodo = (id) => {
@@ -128,5 +191,17 @@ const findTodoInList = (id) => {
   return { index, todoItem };
 };
 
+const handleSelectedAllTodos = (event) => {
+  const checkedValue = event.target.checked;
+  renderTodoList({ value: checkedValue });
+};
+//TODO refactor method for remove all selected
+const removeAllSelected = () => {
+  todos = todos.filter((todoItem) => !todoItem.isComplete);
+  renderTodoList();
+};
+
 $addButton.addEventListener("click", addTodo);
 $mainInput.addEventListener("keyup", handleTodoInputKeyDown);
+$checkBoxSelectAll.addEventListener("change", handleSelectedAllTodos);
+$buttonRemoveAllSelected.addEventListener("click", removeAllSelected);
